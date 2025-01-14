@@ -365,9 +365,7 @@ const vercelUrl = `https://${window.location.hostname}`;
     console.log('Vercel URL:', vercelUrl);
 
     // Example: Use the URL to establish a WebSocket connection
-    const socketUrl = vercelUrl.startsWith('https://') ? vercelUrl.replace('https://', 'wss://') : `ws://${vercelUrl}`;
-
-const socket = new WebSocket(socketUrl); // Replace with your server's address
+const socket = new WebSocket(vercelUrl); // Replace with your server's address
 
     function hideOutput() {
       document.querySelector("#recipe-container").style.display = "none";
