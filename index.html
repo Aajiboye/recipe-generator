@@ -361,8 +361,13 @@ function convertWhatsAppMarkdownToHTML(text) {
     // Return the converted text
     return text;
 }
+const vercelUrl = `https://${window.location.hostname}`;
+    console.log('Vercel URL:', vercelUrl);
 
-const socket = new WebSocket(process.env.NEXT_PUBLIC_SERVER_URL); // Replace with your server's address
+    // Example: Use the URL to establish a WebSocket connection
+    const socketUrl = vercelUrl.startsWith('https://') ? vercelUrl.replace('https://', 'wss://') : `ws://${vercelUrl}`;
+
+const socket = new WebSocket(socketUrl); // Replace with your server's address
 
     function hideOutput() {
       document.querySelector("#recipe-container").style.display = "none";
