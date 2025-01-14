@@ -362,7 +362,7 @@ function convertWhatsAppMarkdownToHTML(text) {
     return text;
 }
 
-const socket = new WebSocket("http://localhost:8080"); // Replace with your server's address
+const socket = new WebSocket(process.env.NEXT_PUBLIC_SERVER_URL); // Replace with your server's address
 
     function hideOutput() {
       document.querySelector("#recipe-container").style.display = "none";
