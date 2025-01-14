@@ -1,0 +1,23 @@
+{
+  "name": "recipe-generator",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240403.0",
+    "wrangler": "^3.48.0"
+  },
+  "dependencies": {
+    "@cloudflare/ai": "^1.1.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "description": "This project was created for the dev.to [Cloudflare Challenge](https://dev.to/challenges/cloudflare)",
+  "main": "server.js",
+  "author": "",
+  "license": "ISC"
+}
