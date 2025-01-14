@@ -13,8 +13,8 @@ app.get('/', async(req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(5000, () => {
-  console.log("Server successfully running on port 5000");
+app.listen(5010, () => {
+  console.log("Server successfully running on port 5010");
 });
 
 const wss = new WebSocket.Server({ port: 8080 });
