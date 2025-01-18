@@ -361,9 +361,13 @@ function convertWhatsAppMarkdownToHTML(text) {
     // Return the converted text
     return text;
 }
+const protocol = window.location.protocol;
+const hostname = window.location.hostname;
+const port = window.location.port;
+const baseUrl = `${protocol}//${hostname}${port ? `:${port}` : ''}`;
 
-const socket = new WebSocket("http://localhost:8080"); // Replace with your server's address
-
+const serverUrl = `${baseUrl}/api/recipe`; // Update with your server's endpoint
+console.log(serverUrl)
     function hideOutput() {
       document.querySelector("#recipe-container").style.display = "none";
     }
@@ -397,11 +401,10 @@ const socket = new WebSocket("http://localhost:8080"); // Replace with your serv
       const requestData = {};
       document
         .querySelector("#submit-button")
-        .addEventListener("click", (e) => {
+        .addEventListener("click", async (e) => {
           const categorySelected = document.querySelector(
             'input[name="recipes"]:checked'
           );
-          console.log(categorySelected)
           const detailsInput = document.querySelector("#details").value;
           if (!(categorySelected && detailsInput.length > 0)) {
             alert("Choose a category and enter detail about the recipe");
@@ -417,25 +420,35 @@ const socket = new WebSocket("http://localhost:8080"); // Replace with your serv
             // Chat to get Recipe
 
             // const chatPrompt = `${requestData.category} described as ${requestData.details}`;
-            const chatPrompt = `Assuming you are a seasoned chef. Come up with the best recipe to make ${requestData.category} with the following additional descriptions ${requestData.details}`;
-            socket.send(chatPrompt);
+            const chatPrompt = {
+        prompt: `Assuming you are a seasoned chef. Come up with the best recipe to make ${requestData.category} with the following additional descriptions: ${requestData.details}`,
+      };        
 
-            socket.onmessage = function (event) {
-              console.log(event)
-              if (event.data === "[DONE]") {
-                enableButton("print-button");
-                return;
-              }
+      try {
+        const response = await fetch(serverUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(chatPrompt),
+        });
 
-              const data = event.data;
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
               if (data) {
-                document.querySelector("#recipe-content").innerHTML +=
-                convertWhatsAppMarkdownToHTML(data);
-                recipeContent += convertWhatsAppMarkdownToHTML(data);
+                const recipeContent = convertWhatsAppMarkdownToHTML(data.recipe);
+          document.querySelector("#recipe-content").innerHTML = recipeContent;
+          enableButton("print-button");
               }
-            };
-
-          }
+            } catch (error) {
+        console.error("Error fetching the recipe:", error);
+        alert("Failed to fetch the recipe. Please try again.");
+        enableButton("submit-button");
+      }
+    }
         });
     });
   </script>
