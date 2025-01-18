@@ -18,7 +18,7 @@ app.get('/', async(req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/recipe', async(req, res) => {
+app.post('/api/recipe', async(req, res) => {
   try {
     const response = await axios.post(
       "https://api-inference.huggingface.co/models/google/gemma-2-2b-it/v1/chat/completions",
